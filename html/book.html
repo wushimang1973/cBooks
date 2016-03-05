@@ -1,0 +1,33 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/cBooks/html/common.css">
+    <script type="text/javascript" src="/cBooks/scripts/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="/cBooks/scripts/common.js"></script>
+    <script type="text/javascript" src="/cBooks/scripts/base64.js"></script>
+    <script type="text/javascript" src="/cBooks/scripts/book.js"></script>
+  </head>
+  <body>
+    <div class="console">
+      <select id="book_name">
+	<option value="book_name"></option>
+      </select>
+      <select id="book_chapter">
+      </select>
+      <input type="text" size="40" name="search_field" id="search_content" value=""/>
+      <button type="button" id="search_button" class="hidden">搜索</button> 
+      <span id="search_zhipi_field" class="hidden"><select id="search_range">
+	  <option value="quanbu">全部</option>
+	  <option value="zhengwen">正文</option>
+	  <option value="zhushi">注釋</option>
+</select></span>
+      <div style="position:relative;float:right;">
+	<input type="checkbox" id="baiwen" value="baiwen"/>白文
+	<button type="button" id="add_comment" class="hidden">加評</button>
+      </div>
+    </div>
+    <div class="main_content" id="mainContent">      
+
+    </div>
+</body>
+</html>
