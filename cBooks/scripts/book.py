@@ -40,14 +40,17 @@ elif Action == "ListChapters":
     JSONbuf['chapterlist'] = [x.replace(BookRoot,"").replace("/",SubDivider).split(".")[0] for x in ChiBookSort(chapterFiles)]
         
     
-elif Action == "GetChapter":
-    targetBook,targetChapter = [b64.urlsafe_b64decode(bytes(x,encoding="utf-8")).decode('utf-8') for x in [form.getfirst("BookName"),form.getfirst("ChapterName")]]
-    BookRoot="{0}/{1}".format(bookDir,targetBook).replace(";","")
-    if targetChapter.find(SubDivider) > -1:   # subdirectory within book ex 賦-卷一.html : rewrap as directory path ex 賦/卷一.html
-        targetChapter=targetChapter.split(SubDivider)
-        targetChapter="{0}/{1}".format(targetChapter[0],targetChapter[1])
-    with open("{0}/{1}/{2}.html".format(bookDir,targetBook,targetChapter).replace(";",""),"rb") as f:        
-        JSONbuf['chapter_contents']=b64.urlsafe_b64encode(f.read()).decode("utf-8")
+elif Action == "ListChapters":
+    targetBook=form.getfirst("BookName")
+    targetBook=b64.urlsafe_b64decode(targetBook).decode("utf-8")
+    BookRoot="{0}{1}/".format(bookDir,targetBook).replace(";","")
+    try:
+        for subDir in os.listdir(BookRoot):
+            chapterFiles += [SubDivider.join([subDir,x]) for x in os.listdir(BookRoot+subDir)]
+    except NotADirectoryError:
+        chapterFiles = os.listdir(BookRoot)
+
+    JSONbuf['chapterlist'] = [x.replace(BookRoot,"").replace("/",SubDivider).split(".")[0] for x in ChiBookSort(chapterFiles)]
 
 elif Action == "SearchContent":
     Book=b64.urlsafe_b64decode(form.getfirst("BookName")).decode('utf-8')
