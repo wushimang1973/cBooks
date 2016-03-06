@@ -1,6 +1,6 @@
 
 
-var BaseScript="/cBooks/scripts/cgi-bin/book.py?RequestType=";
+var BaseScript="/cBooks/scripts/book.py?RequestType=";
 var HTMLbegin = '<html><head><meta charset="utf-8"><link rel="stylesheet" type="text/css" href="/cBooks/html/chinese.css"></head><body>';
 var HTMLend = '</body></html>';
 

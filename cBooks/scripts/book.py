@@ -21,9 +21,9 @@ Action = form.getfirst("RequestType")
 JSONbuf = {}
 jEncode = json.JSONEncoder().encode
 bookDir = WEB_ROOT+"cBooks/books/"
-SubDivider = "-"   # symbol to indicate subdivision by category ex 賦-卷一.html
+SubDivider = Chin["interpunct"]   # symbol to indicate subdivision by category ex 賦-卷一.html
 Entry=Creator(FindRegex,rgx='(<div class="biji_block">.*?</div>)(?=\W{0,}<div class="biji_block">|\W{0,}</body>)')
-
+chapterFiles = []
 if Action == "ListBooks":
     JSONbuf['booklist'] = shell_exec("ls {0}".format(bookDir)).decode("utf-8").split("\n")[:-1]
     
@@ -31,7 +31,12 @@ elif Action == "ListChapters":
     targetBook=form.getfirst("BookName")
     targetBook=b64.urlsafe_b64decode(targetBook).decode("utf-8")
     BookRoot="{0}{1}/".format(bookDir,targetBook).replace(";","")
-    chapterFiles = os.listdir(BookRoot)
+    try:
+        for subDir in os.listdir(BookRoot):
+            chapterFiles += [SubDivider.join([subDir,x]) for x in os.listdir(BookRoot+subDir)]
+    except NotADirectoryError:
+        chapterFiles = os.listdir(BookRoot)
+        
     JSONbuf['chapterlist'] = [x.replace(BookRoot,"").replace("/",SubDivider).split(".")[0] for x in ChiBookSort(chapterFiles)]
         
     
